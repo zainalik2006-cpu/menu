@@ -37,6 +37,18 @@ Keep the columns in this order and keep the menu on the first tab.
 
 Text shrinks on its own if a column gets longer, so nothing runs off the screen.
 
+## Text size
+
+Each TV has its own text size. Move the cursor (or press the select button) and a
+bar appears at the bottom:
+
+- **Text size − / +** picks how many pages the screen uses. 1 page shows everything
+  at once. 2 or more pages makes the text bigger, and the pages rotate.
+- **Seconds per page** sets how long each page stays up.
+- **Full screen** hides the browser bars.
+
+The TV remembers the choice. On a computer the up and down arrow keys do the same.
+
 ## The dot next to the clock
 
 Green: prices are live from the sheet. Amber: the TV has not reached the sheet for
@@ -44,5 +56,13 @@ five minutes and is showing the last prices it saw.
 
 ## Other settings
 
-`config.js` holds the sheet ID, phone number, website, the note in the top bar, and
-how often the TVs refresh.
+`config.js` holds the sheet ID, phone number, website, the note in the top bar, how
+often the TVs refresh, and the starting text size.
+
+Colors are the short list at the top of `menu.css`.
+
+## Changing these files
+
+After changing any file here, raise the number in `version.txt` by one. Screens that
+are already open check that number every 5 minutes and reload themselves when it
+changes, so nobody has to touch the TVs.

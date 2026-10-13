@@ -5,23 +5,73 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex">
 <title>Halal 4 All Menu, Screen 1</title>
-<link rel="stylesheet" href="../menu.css">
+<style>html, body { background: #26302b; }</style>
 </head>
 <body>
 <div id="stage">
   <div id="bar">
     <div id="brand"></div>
     <div id="bar-note"></div>
-    <div id="bar-contact" class="push"></div>
-    <div id="clock" class="push"><div class="time" id="time"></div><div class="date" id="date"></div></div>
+    <div class="spacer"></div>
+    <div id="bar-contact"></div>
+    <div id="pips" hidden></div>
+    <div id="clock"><span id="date"></span><span id="time"></span></div>
     <div id="sync"></div>
   </div>
   <div id="cols"></div>
+  <div id="progress"><i></i></div>
   <div id="msg" hidden></div>
 </div>
-<script>window.MENU_SCREEN = 1;</script>
-<script src="../config.js"></script>
-<script src="../backup.js"></script>
-<script src="../menu.js"></script>
+<script>
+window.MENU_SCREEN = 1;
+/* Loads the menu files. It first asks the site for its current version number
+   (version.txt) and adds it to each file's address, so a TV or computer never
+   keeps showing an old saved copy after the site is updated. */
+(function () {
+  var FILES = ["../config.js", "../backup.js", "../menu.js"];
+  var started = false;
+
+  function boot(version) {
+    if (started) return;
+    started = true;
+    window.MENU_VERSION = version;
+    var q = version ? "?v=" + version : "";
+    var next = 0, scriptsStarted = false;
+    function loadScripts() {
+      if (scriptsStarted) return;
+      scriptsStarted = true;
+      (function one() {
+        if (next >= FILES.length) return;
+        var s = document.createElement("script");
+        s.src = FILES[next++] + q;
+        s.onload = s.onerror = one;
+        document.body.appendChild(s);
+      })();
+    }
+    var css = document.createElement("link");
+    css.rel = "stylesheet";
+    css.href = "../menu.css" + q;
+    css.onload = css.onerror = loadScripts;
+    document.head.appendChild(css);
+    setTimeout(loadScripts, 4000);
+  }
+
+  var giveUp = setTimeout(function () { boot(""); }, 5000);
+  try {
+    var x = new XMLHttpRequest();
+    x.open("GET", "../version.txt?_=" + Date.now());
+    x.onload = function () {
+      clearTimeout(giveUp);
+      var v = (x.status === 200 ? x.responseText : "").replace(/\s+/g, "");
+      boot(/^[\w.-]{1,40}$/.test(v) ? v : "");
+    };
+    x.onerror = function () { clearTimeout(giveUp); boot(""); };
+    x.send();
+  } catch (e) {
+    clearTimeout(giveUp);
+    boot("");
+  }
+})();
+</script>
 </body>
 </html>
