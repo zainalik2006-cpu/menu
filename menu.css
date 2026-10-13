@@ -1,0 +1,253 @@
+@font-face {
+  font-family: "Barlow Semi Condensed";
+  font-weight: 500;
+  font-display: block;
+  src: url("fonts/barlow-semi-condensed-latin-500-normal.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Barlow Semi Condensed";
+  font-weight: 600;
+  font-display: block;
+  src: url("fonts/barlow-semi-condensed-latin-600-normal.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Barlow Semi Condensed";
+  font-weight: 700;
+  font-display: block;
+  src: url("fonts/barlow-semi-condensed-latin-700-normal.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Zilla Slab";
+  font-weight: 700;
+  font-display: block;
+  src: url("fonts/zilla-slab-latin-700-normal.woff2") format("woff2");
+}
+
+:root {
+  --iron: #171513;        /* cast-iron background */
+  --iron-2: #211e1b;      /* raised surface */
+  --seam: #3a3530;        /* dividers */
+  --paper: #f5eee0;       /* butcher-paper text */
+  --paper-dim: #b9b0a0;   /* secondary text */
+  --cut: #c22a1d;         /* brand red, fills */
+  --cut-bright: #ee4d3d;  /* brand red, on dark text */
+  --leaf: #58b27c;        /* brand green, small accents */
+
+  --row: 32px;            /* set by menu.js */
+  --fs: 23px;             /* set by menu.js */
+  --ts: 27px;             /* section title size, set by menu.js */
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: var(--iron);
+  color: var(--paper);
+  font-family: "Barlow Semi Condensed", "Arial Narrow", Arial, sans-serif;
+  cursor: none;
+}
+
+/* A fixed 1920x1080 canvas, scaled by menu.js to fill whatever TV it is on. */
+#stage {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 1920px;
+  height: 1080px;
+  transform-origin: center center;
+  background: var(--iron);
+  display: flex;
+  flex-direction: column;
+  padding: 0 34px 26px;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+#stage.ready { opacity: 1; }
+
+/* ---------- top bar ---------- */
+#bar {
+  flex: 0 0 auto;
+  height: 92px;
+  display: flex;
+  align-items: center;
+  gap: 40px;
+  border-bottom: 2px solid var(--seam);
+  margin-bottom: 22px;
+}
+#brand {
+  font-family: "Zilla Slab", Georgia, serif;
+  font-weight: 700;
+  font-size: 62px;
+  line-height: 1;
+  letter-spacing: -0.5px;
+  color: var(--cut-bright);
+  white-space: nowrap;
+}
+#bar-note {
+  font-size: 25px;
+  font-weight: 500;
+  color: var(--paper-dim);
+  white-space: nowrap;
+}
+#bar-contact {
+  font-size: 30px;
+  font-weight: 600;
+  color: var(--paper);
+  white-space: nowrap;
+  display: flex;
+  gap: 36px;
+}
+#bar-contact[hidden] { display: none; }
+#bar .push { margin-left: auto; }
+#clock {
+  text-align: right;
+  white-space: nowrap;
+  line-height: 1.1;
+}
+#clock .time {
+  font-size: 36px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+#clock .date {
+  font-size: 22px;
+  font-weight: 500;
+  color: var(--paper-dim);
+}
+#sync {
+  flex: 0 0 auto;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--leaf);
+  margin-left: -18px;
+}
+#sync.stale { background: #e0a030; }
+
+/* ---------- columns ---------- */
+#cols {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  column-gap: 0;
+}
+.col {
+  position: relative;
+  min-width: 0;
+  padding: 0 22px;
+  border-left: 2px solid var(--seam);
+  display: flex;
+  flex-direction: column;
+}
+.col:first-child { border-left: 0; padding-left: 0; }
+.col:last-child { padding-right: 0; }
+
+.section + .section { margin-top: calc(var(--row) * 0.5); }
+
+.section-title {
+  height: calc(var(--row) * 1.2);
+  margin-bottom: calc(var(--row) * 0.15);
+  padding: 0 calc(var(--row) * 0.4);
+  display: flex;
+  align-items: center;
+  background: var(--cut);
+  color: var(--paper);
+  font-family: "Zilla Slab", Georgia, serif;
+  font-weight: 700;
+  font-size: var(--ts);
+  line-height: 1;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.item {
+  height: var(--row);
+  display: flex;
+  align-items: baseline;
+  font-size: var(--fs);
+  line-height: var(--row);
+  white-space: nowrap;
+}
+.item .name {
+  flex: 0 0 auto;
+  font-weight: 500;
+}
+.item .lead {
+  flex: 1 1 auto;
+  min-width: 14px;
+  margin: 0 8px;
+  border-bottom: 2px dotted var(--seam);
+  transform: translateY(-0.28em);
+}
+.item .price {
+  flex: 0 0 auto;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+.item .price .cur {
+  font-size: 0.72em;
+  font-weight: 600;
+  color: var(--paper-dim);
+  margin-right: 1px;
+  position: relative;
+  top: -0.16em;
+}
+.item .price .unit {
+  font-size: 0.68em;
+  font-weight: 600;
+  color: var(--paper-dim);
+  margin-left: 2px;
+}
+.item .price.word { color: var(--leaf); letter-spacing: 0.5px; }
+
+/* ---------- contact card (sits in the emptiest column) ---------- */
+#card {
+  position: absolute;
+  left: 22px;
+  right: 22px;
+  bottom: 0;
+  padding: 26px 28px 28px;
+  background: var(--iron-2);
+  border-top: 6px solid var(--leaf);
+}
+.col:first-child #card { left: 0; }
+.col:last-child #card { right: 0; }
+#card .site, #card .phone { white-space: nowrap; overflow: hidden; }
+#card .lbl {
+  font-size: 26px;
+  font-weight: 500;
+  color: var(--paper-dim);
+}
+#card .site {
+  font-family: "Zilla Slab", Georgia, serif;
+  font-weight: 700;
+  font-size: 44px;
+  line-height: 1.15;
+  margin-top: 2px;
+}
+#card .phone {
+  font-size: 40px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.2;
+  margin-top: 14px;
+}
+
+/* ---------- message shown only when there is nothing to display ---------- */
+#msg {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: 40px;
+  font-weight: 500;
+  color: var(--paper-dim);
+  padding: 120px;
+}
+#msg[hidden] { display: none; }
