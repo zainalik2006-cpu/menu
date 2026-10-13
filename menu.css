@@ -24,14 +24,16 @@
 }
 
 :root {
-  --iron: #171513;        /* cast-iron background */
-  --iron-2: #211e1b;      /* raised surface */
-  --seam: #3a3530;        /* dividers */
-  --paper: #f5eee0;       /* butcher-paper text */
-  --paper-dim: #b9b0a0;   /* secondary text */
-  --cut: #c22a1d;         /* brand red, fills */
-  --cut-bright: #ee4d3d;  /* brand red, on dark text */
-  --leaf: #58b27c;        /* brand green, small accents */
+  --bg: #29322d;          /* screen background: soft green-grey */
+  --surface: #333e38;     /* contact card */
+  --line: #4f5d55;        /* dividers and dotted leaders */
+  --text: #f6f1e4;        /* item names and prices */
+  --text-dim: #b7c0b7;    /* secondary text */
+  --band: #2f8a59;        /* section heading fill: brand green */
+  --band-text: #f6f1e4;   /* section heading text */
+  --brand: #f25c4a;       /* store name: brand red */
+  --accent: #7fd6a0;      /* MP, card edge */
+  --live: #7fd6a0;        /* dot when prices are live */
 
   --row: 32px;            /* set by menu.js */
   --fs: 23px;             /* set by menu.js */
@@ -44,8 +46,8 @@ html, body {
   width: 100%;
   height: 100%;
   overflow: hidden;
-  background: var(--iron);
-  color: var(--paper);
+  background: var(--bg);
+  color: var(--text);
   font-family: "Barlow Semi Condensed", "Arial Narrow", Arial, sans-serif;
   cursor: none;
 }
@@ -58,7 +60,7 @@ html, body {
   width: 1920px;
   height: 1080px;
   transform-origin: center center;
-  background: var(--iron);
+  background: var(--bg);
   display: flex;
   flex-direction: column;
   padding: 0 34px 26px;
@@ -74,7 +76,7 @@ html, body {
   display: flex;
   align-items: center;
   gap: 40px;
-  border-bottom: 2px solid var(--seam);
+  border-bottom: 2px solid var(--line);
   margin-bottom: 22px;
 }
 #brand {
@@ -83,19 +85,19 @@ html, body {
   font-size: 62px;
   line-height: 1;
   letter-spacing: -0.5px;
-  color: var(--cut-bright);
+  color: var(--brand);
   white-space: nowrap;
 }
 #bar-note {
   font-size: 25px;
   font-weight: 500;
-  color: var(--paper-dim);
+  color: var(--text-dim);
   white-space: nowrap;
 }
 #bar-contact {
   font-size: 30px;
   font-weight: 600;
-  color: var(--paper);
+  color: var(--text);
   white-space: nowrap;
   display: flex;
   gap: 36px;
@@ -115,14 +117,14 @@ html, body {
 #clock .date {
   font-size: 22px;
   font-weight: 500;
-  color: var(--paper-dim);
+  color: var(--text-dim);
 }
 #sync {
   flex: 0 0 auto;
   width: 12px;
   height: 12px;
   border-radius: 50%;
-  background: var(--leaf);
+  background: var(--live);
   margin-left: -18px;
 }
 #sync.stale { background: #e0a030; }
@@ -139,7 +141,7 @@ html, body {
   position: relative;
   min-width: 0;
   padding: 0 22px;
-  border-left: 2px solid var(--seam);
+  border-left: 2px solid var(--line);
   display: flex;
   flex-direction: column;
 }
@@ -154,8 +156,8 @@ html, body {
   padding: 0 calc(var(--row) * 0.4);
   display: flex;
   align-items: center;
-  background: var(--cut);
-  color: var(--paper);
+  background: var(--band);
+  color: var(--band-text);
   font-family: "Zilla Slab", Georgia, serif;
   font-weight: 700;
   font-size: var(--ts);
@@ -180,7 +182,7 @@ html, body {
   flex: 1 1 auto;
   min-width: 14px;
   margin: 0 8px;
-  border-bottom: 2px dotted var(--seam);
+  border-bottom: 2px dotted var(--line);
   transform: translateY(-0.28em);
 }
 .item .price {
@@ -191,7 +193,7 @@ html, body {
 .item .price .cur {
   font-size: 0.72em;
   font-weight: 600;
-  color: var(--paper-dim);
+  color: var(--text-dim);
   margin-right: 1px;
   position: relative;
   top: -0.16em;
@@ -199,10 +201,10 @@ html, body {
 .item .price .unit {
   font-size: 0.68em;
   font-weight: 600;
-  color: var(--paper-dim);
+  color: var(--text-dim);
   margin-left: 2px;
 }
-.item .price.word { color: var(--leaf); letter-spacing: 0.5px; }
+.item .price.word { color: var(--accent); letter-spacing: 0.5px; }
 
 /* ---------- contact card (sits in the emptiest column) ---------- */
 #card {
@@ -211,8 +213,8 @@ html, body {
   right: 22px;
   bottom: 0;
   padding: 26px 28px 28px;
-  background: var(--iron-2);
-  border-top: 6px solid var(--leaf);
+  background: var(--surface);
+  border-top: 6px solid var(--accent);
 }
 .col:first-child #card { left: 0; }
 .col:last-child #card { right: 0; }
@@ -220,7 +222,7 @@ html, body {
 #card .lbl {
   font-size: 26px;
   font-weight: 500;
-  color: var(--paper-dim);
+  color: var(--text-dim);
 }
 #card .site {
   font-family: "Zilla Slab", Georgia, serif;
@@ -247,7 +249,7 @@ html, body {
   text-align: center;
   font-size: 40px;
   font-weight: 500;
-  color: var(--paper-dim);
+  color: var(--text-dim);
   padding: 120px;
 }
 #msg[hidden] { display: none; }
